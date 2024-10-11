@@ -1,4 +1,4 @@
-package instantiation;
+package basic.instantiation;
 
 public class MainClass {
 
