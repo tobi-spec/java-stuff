@@ -2,7 +2,7 @@ package basic.constructorInstantiation;
 
 public class MainClass {
 
-    private ServiceClass serviceClass;
+    private final ServiceClass serviceClass;
 
     public MainClass(ServiceClass serviceClass) {
         this.serviceClass = serviceClass;
