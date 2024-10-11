@@ -1,4 +1,4 @@
-package basic.instantiation;
+package basic.instantiation.simple;
 
 public class MainClass {
 

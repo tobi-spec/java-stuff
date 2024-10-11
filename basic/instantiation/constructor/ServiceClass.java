@@ -1,4 +1,4 @@
-package basic.instantiation;
+package basic.instantiation.constructor;
 
 public class ServiceClass {
 
