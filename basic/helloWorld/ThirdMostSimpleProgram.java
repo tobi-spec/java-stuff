@@ -5,7 +5,10 @@ public class ThirdMostSimpleProgram {
     String message = "Hello World";
 
     public static void main(String[] args) {
-        ThirdMostSimpleProgram simpleProgram = new ThirdMostSimpleProgram();
-        System.out.println(simpleProgram.message);
+        ThirdMostSimpleProgram oneSimpleProgram = new ThirdMostSimpleProgram();
+        System.out.println(oneSimpleProgram.message);
+
+        ThirdMostSimpleProgram anotherSimpleProgram = new ThirdMostSimpleProgram();
+        System.out.println(anotherSimpleProgram.message);
     }
 }
