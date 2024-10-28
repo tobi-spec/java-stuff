@@ -1,4 +1,4 @@
-package designePatterns.factoryPatterns.factoryMethodPattern.model;
+package designePatterns.factoryPatterns.factoryMethodPattern.factory;
 
 import designePatterns.factoryPatterns.factoryMethodPattern.model.Document;
 
