@@ -1,8 +1,8 @@
-package designePatterns.factoryPatterns.factoryMethodPattern;
+package designePatterns.creationalPatterns.factoryPatterns.factoryMethodPattern;
 
-import designePatterns.factoryPatterns.factoryMethodPattern.factory.CSVDocumentFactory;
-import designePatterns.factoryPatterns.factoryMethodPattern.factory.PDFDocumentFactory;
-import designePatterns.factoryPatterns.factoryMethodPattern.factory.WordDocumentFactory;
+import designePatterns.creationalPatterns.factoryPatterns.factoryMethodPattern.factory.CSVDocumentFactory;
+import designePatterns.creationalPatterns.factoryPatterns.factoryMethodPattern.factory.PDFDocumentFactory;
+import designePatterns.creationalPatterns.factoryPatterns.factoryMethodPattern.factory.WordDocumentFactory;
 
 public class DocumentMain {
 

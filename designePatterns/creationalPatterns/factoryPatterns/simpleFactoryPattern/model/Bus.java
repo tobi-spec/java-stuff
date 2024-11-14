@@ -1,4 +1,4 @@
-package designePatterns.factoryPatterns.simpleFactoryPattern.model;
+package designePatterns.creationalPatterns.factoryPatterns.simpleFactoryPattern.model;
 
 public class Bus implements Vehicle{
 

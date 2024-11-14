@@ -1,9 +1,9 @@
-package designePatterns.factoryPatterns.simpleFactoryPattern;
+package designePatterns.creationalPatterns.factoryPatterns.simpleFactoryPattern;
 
-import designePatterns.factoryPatterns.simpleFactoryPattern.model.Bike;
-import designePatterns.factoryPatterns.simpleFactoryPattern.model.Bus;
-import designePatterns.factoryPatterns.simpleFactoryPattern.model.Car;
-import designePatterns.factoryPatterns.simpleFactoryPattern.model.Vehicle;
+import designePatterns.creationalPatterns.factoryPatterns.simpleFactoryPattern.model.Bike;
+import designePatterns.creationalPatterns.factoryPatterns.simpleFactoryPattern.model.Bus;
+import designePatterns.creationalPatterns.factoryPatterns.simpleFactoryPattern.model.Car;
+import designePatterns.creationalPatterns.factoryPatterns.simpleFactoryPattern.model.Vehicle;
 
 public class VehicleFactory {
 

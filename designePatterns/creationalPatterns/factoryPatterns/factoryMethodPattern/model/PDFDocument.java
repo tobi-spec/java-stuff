@@ -1,4 +1,4 @@
-package designePatterns.factoryPatterns.factoryMethodPattern.model;
+package designePatterns.creationalPatterns.factoryPatterns.factoryMethodPattern.model;
 
 public class PDFDocument implements Document{
 

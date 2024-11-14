@@ -1,6 +1,6 @@
-package designePatterns.factoryPatterns.simpleFactoryPattern;
+package designePatterns.creationalPatterns.factoryPatterns.simpleFactoryPattern;
 
-import designePatterns.factoryPatterns.simpleFactoryPattern.model.Vehicle;
+import designePatterns.creationalPatterns.factoryPatterns.simpleFactoryPattern.model.Vehicle;
 
 public class VehicleMain {
 

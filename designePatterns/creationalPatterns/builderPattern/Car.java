@@ -1,4 +1,4 @@
-package designePatterns.builderPattern;
+package designePatterns.creationalPatterns.builderPattern;
 
 public class Car {
     private final int id;

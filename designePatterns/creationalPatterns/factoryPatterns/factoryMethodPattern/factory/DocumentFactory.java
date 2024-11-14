@@ -1,6 +1,6 @@
-package designePatterns.factoryPatterns.factoryMethodPattern.factory;
+package designePatterns.creationalPatterns.factoryPatterns.factoryMethodPattern.factory;
 
-import designePatterns.factoryPatterns.factoryMethodPattern.model.Document;
+import designePatterns.creationalPatterns.factoryPatterns.factoryMethodPattern.model.Document;
 
 public abstract class DocumentFactory {
 
