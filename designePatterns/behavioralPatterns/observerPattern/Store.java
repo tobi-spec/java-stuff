@@ -8,7 +8,7 @@ public class Store {
     }
 
     public void newItemPromotion() {
-        notificationService.notify();
+        notificationService.notifyCustomers();
     }
 
     public NotificationService getNotificationService() {
