@@ -1,6 +1,6 @@
 package designePatterns.behavioralPatterns.observerPattern;
 
-public class EmailMsgListener {
+public class EmailMsgListener implements EventListener{
     private final String email;
 
     public EmailMsgListener(String email) {
@@ -8,6 +8,6 @@ public class EmailMsgListener {
     }
 
     public void update() {
-        System.out.println("Send update to customer");
+        System.out.println("Send update to customer via email");
     }
 }
