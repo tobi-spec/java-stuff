@@ -2,7 +2,7 @@ package designePatterns.behavioralPatterns.observerPattern;
 
 public class ObserverMain {
     public static void main(String[] args) {
-        Store store = new Store();
+        Store store = new Store(new NotificationService());
         NotificationService notificationService = store.getNotificationService();
 
         notificationService.subscribe(

@@ -3,8 +3,8 @@ package designePatterns.behavioralPatterns.observerPattern;
 public class Store {
     private final NotificationService notificationService;
 
-    public Store() {
-        this.notificationService = new NotificationService();
+    public Store(NotificationService notificationService) {
+        this.notificationService = notificationService;
     }
 
     public void newItemPromotion() {
