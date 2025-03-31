@@ -20,11 +20,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().authenticated() // Protect all endpoints
+                        .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults())  // Default login page
-                .logout(logout -> logout.logoutSuccessUrl("/")); // Redirect after logout
-
+                .formLogin(withDefaults())
+                .logout(logout -> logout.logoutSuccessUrl("/"));
         return http.build();
     }
 
