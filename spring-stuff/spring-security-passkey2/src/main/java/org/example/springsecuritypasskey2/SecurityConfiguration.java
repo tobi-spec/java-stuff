@@ -22,11 +22,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults())
+                .formLogin(formLogin -> formLogin.defaultSuccessUrl("/webauthn/register", true))
                 .webAuthn((webAuthn) -> webAuthn
                         .rpName("Spring Security Relying Party")
-                        .rpId("example.com")
-                        .allowedOrigins("https://example.com")
+                        .rpId("localhost")
+                        .allowedOrigins("http://localhost:8080")
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/"));
         return http.build();
