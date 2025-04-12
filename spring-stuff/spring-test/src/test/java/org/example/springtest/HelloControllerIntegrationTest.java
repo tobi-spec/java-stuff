@@ -16,9 +16,6 @@ public class HelloControllerIntegrationTest {
     public int port;
 
     @Autowired
-    HelloController helloController;
-
-    @Autowired
     TestRestTemplate testRestTemplate;
 
     @Test
