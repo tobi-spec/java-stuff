@@ -1,7 +1,9 @@
 package org.example.springproperties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
+@Component
 @ConfigurationProperties(prefix = "greetings")
 public class MultiplePropertiesService {
     private String german;
