@@ -13,10 +13,10 @@ import org.springframework.http.ResponseEntity;
 public class HelloControllerIntegrationTest {
 
     @LocalServerPort
-    public int port;
+    private int port;
 
     @Autowired
-    TestRestTemplate testRestTemplate;
+    private TestRestTemplate testRestTemplate;
 
     @Test
     public void testGetHello() {
