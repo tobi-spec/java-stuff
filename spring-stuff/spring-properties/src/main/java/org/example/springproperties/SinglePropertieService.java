@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 @Component
 public class SinglePropertieService {
 
-    @Value("${app.greeting}")
     private String greetingMessage;
+
+    public SinglePropertieService(@Value("${app.greeting}") String greetingMessage) {
+        this.greetingMessage = greetingMessage;
+    }
 
     public String getGreeting() {
         return greetingMessage;
