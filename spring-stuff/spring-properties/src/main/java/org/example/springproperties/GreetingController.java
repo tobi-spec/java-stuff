@@ -25,8 +25,8 @@ public class GreetingController {
     @GetMapping("/greetings")
     public HashMap<String, String> getGreetings() {
         HashMap<String, String> map = new HashMap<>();
-        map.put("deutsch", multiplePropertiesService.getGerman());
-        map.put("englisch", multiplePropertiesService.getEnglish());
+        map.put("german", multiplePropertiesService.getGerman());
+        map.put("english", multiplePropertiesService.getEnglish());
         return map;
     }
 }
