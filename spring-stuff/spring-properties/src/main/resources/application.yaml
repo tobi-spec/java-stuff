@@ -1,2 +1,7 @@
 app:
   greeting: "Hello from @value"
+
+greetings:
+  german: "Hallo von den properties"
+  english: "Hello from properties"
+
