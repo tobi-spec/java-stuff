@@ -1,4 +1,4 @@
-package org.example.springjwt;
+package org.example.springjwt.symmetric;
 
 import com.nimbusds.jose.JOSEException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,24 +7,24 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 
 @RestController
-public class JwtController {
+public class JwtShardSecretController {
 
-    JwtService jwtService;
+    JwtSharedSecretService jwtServiceSharedService;
 
     @Autowired
-    public JwtController(JwtService jwtService) {
-        this.jwtService = jwtService;
+    public JwtShardSecretController(JwtSharedSecretService jwtServiceSharedService) {
+        this.jwtServiceSharedService = jwtServiceSharedService;
     }
 
     @PostMapping("/login")
     public String login(@RequestParam String username) throws JOSEException {
-        return jwtService.createJWTToken(username);
+        return jwtServiceSharedService.createJWTToken(username);
     }
 
     @GetMapping("/secure-data")
     public String getSecureData(@RequestHeader("Authorization") String header) throws ParseException, JOSEException {
-        String token = jwtService.extractToken(header);
-        String username = jwtService.validateToken(token);
+        String token = jwtServiceSharedService.extractToken(header);
+        String username = jwtServiceSharedService.validateToken(token);
         return "This is secure data for user: " + username;
 
     }

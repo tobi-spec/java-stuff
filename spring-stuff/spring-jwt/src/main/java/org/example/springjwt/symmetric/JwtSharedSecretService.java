@@ -1,4 +1,4 @@
-package org.example.springjwt;
+package org.example.springjwt.symmetric;
 
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
@@ -7,6 +7,7 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -16,10 +17,13 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class JwtService {
+public class JwtSharedSecretService {
 
-    private static final String SECRET = "0123456789abcdef0123456789abcdef";
+    @Value("${jwt.sharedSecret}")
+    private String SECRET;
+
     private static final long EXPIRATION_TIME_MS = 60 * 60 * 1000; // 1 hour
+
 
     public String createJWTToken(String username) throws JOSEException {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
