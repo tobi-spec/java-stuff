@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 
 @RestController
-public class JWTController {
+public class JwtController {
 
-    JWTService jwtService;
+    JwtService jwtService;
 
     @Autowired
-    public JWTController(JWTService jwtService) {
+    public JwtController(JwtService jwtService) {
         this.jwtService = jwtService;
     }
 

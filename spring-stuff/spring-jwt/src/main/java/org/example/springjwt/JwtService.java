@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class JWTService {
+public class JwtService {
 
     private static final String SECRET = "0123456789abcdef0123456789abcdef";
     private static final long EXPIRATION_TIME_MS = 60 * 60 * 1000; // 1 hour
