@@ -1,26 +1,20 @@
 package org.example.springrestsql;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.context.TestPropertySource;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class ProductControllerIntegrationTest {
+@TestPropertySource("classpath:application-pg.properties")
+public class ProductControllerPostgresIntegrationTest {
 
     @LocalServerPort
     private int port;
@@ -29,15 +23,22 @@ public class ProductControllerIntegrationTest {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    public void testAddProduct() throws Exception {
-        Product product = new Product("soap");
+    public void testAddProduct() {
+        Product product = new Product("sqlSoap");
         HttpEntity<Product> entity = new HttpEntity<>(product);
 
-        ResponseEntity<String> response = testRestTemplate.postForEntity(
+        ResponseEntity<String> responseCreate = testRestTemplate.postForEntity(
                 "http://localhost:" + port + "/create", entity, String.class);
-        Assertions.assertEquals(response.getStatusCode(), HttpStatus.CREATED);
+        Assertions.assertEquals( HttpStatus.CREATED, responseCreate.getStatusCode());
+
+        ResponseEntity<String> responseRead = testRestTemplate.getForEntity(
+                "http://localhost:" + port + "/read", String.class);
+        Assertions.assertEquals(HttpStatus.OK, responseRead.getStatusCode());
+        Assertions.assertEquals(responseRead.getBody(), new Product("soap"));
+
 
     }
+
 
 
 }
