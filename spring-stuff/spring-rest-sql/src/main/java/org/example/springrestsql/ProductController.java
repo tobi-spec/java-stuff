@@ -33,7 +33,7 @@ public class ProductController {
     @PatchMapping("/update")
     public ResponseEntity<Void> updateProduct(@RequestParam Long id, @RequestParam String name) {
         Optional<Product> product = productRepository.findById(id);
-        if(!product.isPresent()) {
+        if(product.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -45,7 +45,7 @@ public class ProductController {
     @DeleteMapping("delete")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         Optional<Product> product = productRepository.findById(id);
-        if (!product.isPresent()) {
+        if (product.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         productRepository.delete(product.get());
