@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>spring-security-passkey2</artifactId>
+    <artifactId>spring-security-passkey</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-security-passkey2</name>
     <description>spring-security-passkey2</description>

@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringSecurityPasskey2Application {
+public class SpringSecurityPasskeyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringSecurityPasskey2Application.class, args);
+        SpringApplication.run(SpringSecurityPasskeyApplication.class, args);
     }
 
 }
