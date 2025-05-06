@@ -1,4 +1,4 @@
-package org.example.springsecuritypasskey2;
+package org.example.springsecuritypasskey;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

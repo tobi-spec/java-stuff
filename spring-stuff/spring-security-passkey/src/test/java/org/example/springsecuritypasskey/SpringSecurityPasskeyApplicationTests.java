@@ -1,10 +1,10 @@
-package org.example.springsecuritypasskey2;
+package org.example.springsecuritypasskey;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringSecurityPasskey2ApplicationTests {
+class SpringSecurityPasskeyApplicationTests {
 
     @Test
     void contextLoads() {

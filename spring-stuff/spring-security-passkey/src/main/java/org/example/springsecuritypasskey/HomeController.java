@@ -1,4 +1,4 @@
-package org.example.springsecuritypasskey2;
+package org.example.springsecuritypasskey;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
