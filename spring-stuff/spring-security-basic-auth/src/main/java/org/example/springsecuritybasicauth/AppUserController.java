@@ -1,6 +1,15 @@
 package org.example.springsecuritybasicauth;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +18,15 @@ import org.springframework.web.bind.annotation.*;
 public class AppUserController {
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    public AppUserController(AppUserRepository appUserRepository, PasswordEncoder passwordEncoder) {
+    @Autowired
+    public AppUserController(AppUserRepository appUserRepository,
+                             PasswordEncoder passwordEncoder,
+                             AuthenticationManager authenticationManager) {
         this.appUserRepository = appUserRepository;
         this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     @GetMapping("/live")
@@ -21,27 +35,42 @@ public class AppUserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam String username, @RequestParam String password) {
-        if(appUserRepository.findByUsername(username).isPresent()) {
-            return "User already exists";
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+        if(appUserRepository.findByUsername(registerRequest.username()).isPresent()) {
+            return new ResponseEntity<>("User already exists", HttpStatus.CONFLICT);
         }
 
-        AppUser appUser = new AppUser(username, passwordEncoder.encode(password));
+        AppUser appUser = new AppUser(registerRequest.username(), passwordEncoder.encode(registerRequest.password()));
         appUserRepository.save(appUser);
 
-        return "User registered successfully";
+        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody RegisterRequest registerRequest, HttpServletRequest httpRequest) {
+        try{
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(registerRequest.username(), registerRequest.password())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            httpRequest.getSession(true);
+            return new ResponseEntity<>("User logged in successfully", HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+
     @GetMapping("/me")
-    public String me(@AuthenticationPrincipal UserDetails userDetails) {
-        return "Logged in as: " + userDetails.getUsername();
+    public ResponseEntity<String> me(@AuthenticationPrincipal UserDetails userDetails) {
+        return new ResponseEntity<>("Logged in as: " + userDetails.getUsername(), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
-    public String delete(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<String> delete(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest httpRequest) {
         String username = userDetails.getUsername();
         appUserRepository.deleteByUsername(username);
-
-        return "User deleted successfully";
+        httpRequest.getSession().invalidate();
+        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
     }
 }
