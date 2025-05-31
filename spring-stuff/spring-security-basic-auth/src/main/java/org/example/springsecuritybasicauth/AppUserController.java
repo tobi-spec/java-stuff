@@ -46,24 +46,10 @@ public class AppUserController {
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody RegisterRequest registerRequest, HttpServletRequest httpRequest) {
-        try{
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(registerRequest.username(), registerRequest.password())
-            );
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            httpRequest.getSession(true);
-            return new ResponseEntity<>("User logged in successfully", HttpStatus.OK);
-        } catch (AuthenticationException e) {
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
-        }
-    }
-
 
     @GetMapping("/me")
-    public ResponseEntity<String> me(@AuthenticationPrincipal UserDetails userDetails) {
-        return new ResponseEntity<>("Logged in as: " + userDetails.getUsername(), HttpStatus.OK);
+    public ResponseEntity<String> me() {
+        return new ResponseEntity<>("Logged in as", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")

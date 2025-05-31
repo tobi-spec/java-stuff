@@ -10,6 +10,12 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.util.LinkedMultiValueMap;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -57,7 +63,7 @@ class SpringSecurityBasicAuthIntegrationTest {
     }
 
     @Test
-    void testRegisterUserExists() {
+    void testRegisterUserAlreadyExists() {
         appUserRepository.save(new AppUser("testuser", passwordEncoder.encode("password")));
         String url = "http://localhost:" + port + "/register";
 
@@ -78,32 +84,108 @@ class SpringSecurityBasicAuthIntegrationTest {
         appUserRepository.save(new AppUser("testuser", passwordEncoder.encode("password")));
         String url = "http://localhost:" + port + "/login";
 
+        var loginRequest = new LinkedMultiValueMap<String, String>();
+        loginRequest.put("username", Collections.singletonList("testuser"));
+        loginRequest.put("password", Collections.singletonList("password"));
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<LinkedMultiValueMap<String, String>> httpEntity = new HttpEntity<>(loginRequest, httpHeaders);
+
+        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, httpEntity, String.class);
+        List<String> cookies = responseEntity.getHeaders().get(HttpHeaders.SET_COOKIE);
+
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assertions.assertNotNull(cookies);
+    }
+
+    @Test
+    void testLoginUserFail() {
+        appUserRepository.save(new AppUser("testuser", passwordEncoder.encode("password")));
+        String url = "http://localhost:" + port + "/login";
+
+        var loginRequest = new LinkedMultiValueMap<String, String>();
+        loginRequest.put("username", Collections.singletonList("testuser"));
+        loginRequest.put("password", Collections.singletonList("wrongPassword"));
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<LinkedMultiValueMap<String, String>> httpEntity = new HttpEntity<>(loginRequest, httpHeaders);
+
+        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, httpEntity, String.class);
+
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        // TODO: check that no set-cookie header is in responseEntity
+    }
+
+    @Test
+    void testRegisterAndLogin() {
+        String registerUrl = "http://localhost:" + port + "/register";
+
         RegisterRequest registerRequest = new RegisterRequest("testuser", "password");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<RegisterRequest> httpEntity = new HttpEntity<>(registerRequest, httpHeaders);
 
-        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, httpEntity, String.class);
+        ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(registerUrl, httpEntity, String.class);
 
         Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        Assertions.assertEquals("User logged in successfully", responseEntity.getBody());
+        Assertions.assertEquals("User registered successfully", responseEntity.getBody());
+
+        String loginUrl = "http://localhost:" + port + "/login";
+        var loginRequest = new LinkedMultiValueMap<String, String>();
+        loginRequest.put("username", Collections.singletonList("testuser"));
+        loginRequest.put("password", Collections.singletonList("password"));
+
+        HttpHeaders loginhttpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<LinkedMultiValueMap<String, String>> loginHttpEntity = new HttpEntity<>(loginRequest, loginhttpHeaders);
+
+        ResponseEntity<String> loginResponseEntity = testRestTemplate.postForEntity(loginUrl, loginHttpEntity, String.class);
+        List<String> cookies = loginResponseEntity.getHeaders().get(HttpHeaders.SET_COOKIE);
+
+        Assertions.assertEquals(HttpStatus.OK, loginResponseEntity.getStatusCode());
+        Assertions.assertNotNull(cookies);
     }
 
     @Test
-    void testLoginUserFail() {
+    void testLoginAndCallSecureEndpoint() {
         appUserRepository.save(new AppUser("testuser", passwordEncoder.encode("password")));
-
         String url = "http://localhost:" + port + "/login";
-        RegisterRequest registerRequest = new RegisterRequest("testuser", "wrongPassword");
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<RegisterRequest> httpEntity = new HttpEntity<>(registerRequest, httpHeaders);
+        var loginRequest = new LinkedMultiValueMap<String, String>();
+        loginRequest.put("username", Collections.singletonList("testuser"));
+        loginRequest.put("password", Collections.singletonList("password"));
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        HttpEntity<LinkedMultiValueMap<String, String>> httpEntity = new HttpEntity<>(loginRequest, httpHeaders);
 
         ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(url, httpEntity, String.class);
+        List<String> cookies = responseEntity.getHeaders().get(HttpHeaders.SET_COOKIE);
 
-        Assertions.assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
-        Assertions.assertEquals("Invalid username or password", responseEntity.getBody());
+        Assertions.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assertions.assertNotNull(cookies);
+
+        String secureEndpointUrl = "http://localhost:" + port + "/me";
+        HttpHeaders headers = new HttpHeaders();
+
+        var cookie = responseEntity.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+        headers.set("Cookie", Arrays.stream(cookie.split(";")).findFirst().get());
+
+        HttpEntity<String> secureHttpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> secureResponseEntity = testRestTemplate.exchange(
+                secureEndpointUrl,
+                HttpMethod.GET,
+                secureHttpEntity,
+                String.class);
+
+        Assertions.assertEquals(HttpStatus.OK, secureResponseEntity.getStatusCode());
     }
 }

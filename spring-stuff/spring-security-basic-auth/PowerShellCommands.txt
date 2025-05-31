@@ -1,0 +1,13 @@
+$session = New-Object Microsoft.PowerShell.Commands.WebRequestSession
+
+Invoke-WebRequest -Uri "http://localhost:8080/register"
+    -Method POST
+    -Body '{"username": "user", "password": "test"}'
+    -ContentType "application/json"
+    -WebSession $session
+
+Invoke-WebRequest -Uri "http://localhost:8080/login"
+    -Method POST
+    -Body '{"username": "user", "password": "test"}'
+    -ContentType "application/json"
+    -WebSession $session
