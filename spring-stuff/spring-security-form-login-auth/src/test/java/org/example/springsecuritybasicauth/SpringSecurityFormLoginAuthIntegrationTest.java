@@ -14,13 +14,12 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource("classpath:application-h2.properties")
-class SpringSecurityBasicAuthIntegrationTest {
+class SpringSecurityFormLoginAuthIntegrationTest {
 
     @LocalServerPort
     private int port;
