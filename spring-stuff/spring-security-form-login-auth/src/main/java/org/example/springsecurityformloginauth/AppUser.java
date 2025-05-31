@@ -1,4 +1,4 @@
-package org.example.springsecuritybasicauth;
+package org.example.springsecurityformloginauth;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

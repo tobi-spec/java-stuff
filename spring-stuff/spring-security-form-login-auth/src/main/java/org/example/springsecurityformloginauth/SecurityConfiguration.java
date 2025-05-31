@@ -1,4 +1,4 @@
-package org.example.springsecuritybasicauth;
+package org.example.springsecurityformloginauth;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;

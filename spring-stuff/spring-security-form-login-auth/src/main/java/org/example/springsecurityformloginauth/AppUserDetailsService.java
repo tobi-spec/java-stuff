@@ -1,4 +1,4 @@
-package org.example.springsecuritybasicauth;
+package org.example.springsecurityformloginauth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

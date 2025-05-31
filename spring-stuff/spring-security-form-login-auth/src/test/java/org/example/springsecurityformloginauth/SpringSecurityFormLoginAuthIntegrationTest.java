@@ -1,4 +1,4 @@
-package org.example.springsecuritybasicauth;
+package org.example.springsecurityformloginauth;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

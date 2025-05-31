@@ -1,4 +1,4 @@
-package org.example.springsecuritybasicauth;
+package org.example.springsecurityformloginauth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
