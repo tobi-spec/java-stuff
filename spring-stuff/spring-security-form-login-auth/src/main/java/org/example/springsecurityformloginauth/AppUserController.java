@@ -42,10 +42,13 @@ public class AppUserController {
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 
+    //
+    // /login is handled by SpringSecurity
+    //
 
     @GetMapping("/me")
     public ResponseEntity<String> me() {
-        return new ResponseEntity<>("Logged in as", HttpStatus.OK);
+        return new ResponseEntity<>("Logged in", HttpStatus.OK);
     }
 
     @DeleteMapping("/delete")
