@@ -16,12 +16,12 @@ public class JmsMessageController {
     }
 
     @PostMapping("/message")
-    public ResponseEntity<Void> sendMessage(@RequestBody JmsMessage jmsMessage) {
+    public ResponseEntity<String> sendMessage(@RequestBody JmsMessage jmsMessage) {
         if(jmsMessage.getMessage() == null) {
             throw new IllegalArgumentException("Message must not be null");
         }
 
-        jmsSenderService.send(jmsMessage.getMessage());
-        return new ResponseEntity<>(HttpStatus.OK);
+        jmsSenderService.send(jmsMessage);
+        return new ResponseEntity<>("Message sent", HttpStatus.OK);
     }
 }

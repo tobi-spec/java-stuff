@@ -8,6 +8,6 @@ public class JmsReceiver {
 
     @JmsListener(destination = "myQueue")
     public void receiveMessage(String message) {
-        System.out.println("Received message: " + message + "!!!!!!!!!");
+        System.out.println("!!!!!!!!!!!!!! Received message: " + message + "!!!!!!!!!");
     }
 }

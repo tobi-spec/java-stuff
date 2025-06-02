@@ -13,7 +13,7 @@ public class JmsSenderService {
         this.jmsTemplate = jmsTemplate;
     }
 
-    public void send(String message) {
-        jmsTemplate.convertAndSend("myQueue", message);
+    public void send(JmsMessage jmsMessage) {
+        jmsTemplate.convertAndSend("myQueue", jmsMessage.getMessage());
     }
 }

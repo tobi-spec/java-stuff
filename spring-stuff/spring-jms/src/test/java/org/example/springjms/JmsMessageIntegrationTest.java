@@ -27,7 +27,7 @@ class JmsMessageIntegrationTest {
         jmsMessage.setMessage("This is a Test Message");
 
         HttpEntity<JmsMessage> httpEntity = new HttpEntity(jmsMessage);
-        ResponseEntity<Void> requestEntity = testRestTemplate.postForObject(url, httpEntity, ResponseEntity.class);
+        ResponseEntity<String> requestEntity = testRestTemplate.postForEntity(url, httpEntity, String.class);
 
         Assertions.assertEquals(HttpStatus.OK, requestEntity.getStatusCode());
 
