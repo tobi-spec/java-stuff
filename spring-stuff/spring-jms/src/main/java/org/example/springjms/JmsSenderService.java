@@ -14,6 +14,6 @@ public class JmsSenderService {
     }
 
     public void send(JmsMessage jmsMessage) {
-        jmsTemplate.convertAndSend("myQueue", jmsMessage.getMessage());
+        jmsTemplate.convertAndSend("myQueue", jmsMessage);
     }
 }

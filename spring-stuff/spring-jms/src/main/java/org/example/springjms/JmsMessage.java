@@ -19,4 +19,12 @@ public class JmsMessage {
     public void incrementCount() {
         count += 1;
     }
+
+    @Override
+    public String toString() {
+        return "JmsMessage{" +
+                "message='" + message + '\'' +
+                ", count=" + count +
+                '}';
+    }
 }
