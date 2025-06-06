@@ -1,4 +1,4 @@
-package basic.instantiation.constructor;
+package basicStuff.instantiation.constructor;
 
 public class MainClass {
 

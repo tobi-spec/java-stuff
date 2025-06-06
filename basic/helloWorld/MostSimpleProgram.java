@@ -1,4 +1,4 @@
-package basic.helloWorld;
+package basicStuff.helloWorld;
 
 public class MostSimpleProgram {
 

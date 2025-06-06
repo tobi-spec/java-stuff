@@ -1,4 +1,4 @@
-package customAnnotation.simpleAnnotation;
+package advanced.simpleAnnotation;
 
 public class ClassToAnnotated {
 

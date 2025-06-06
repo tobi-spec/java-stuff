@@ -1,4 +1,4 @@
-package basic.constructor;
+package basicStuff.constructor;
 
 public class MostSimpleConstructorMain {
     String message;

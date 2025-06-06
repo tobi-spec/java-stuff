@@ -1,4 +1,4 @@
-package basic.compileAndRun;
+package basicStuff.compileAndRun;
 
 public class HelloWorld {
 

@@ -1,6 +1,6 @@
-package StreamAPI;
+package advanced.streamAPI;
 
-import StreamAPI.model.AppUser;
+import advanced.streamAPI.model.AppUser;
 
 import java.util.Optional;
 import java.util.stream.Stream;

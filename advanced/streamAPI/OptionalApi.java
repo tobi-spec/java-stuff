@@ -1,4 +1,4 @@
-package StreamAPI;
+package advanced.streamAPI;
 
 public class OptionalApi {
 }

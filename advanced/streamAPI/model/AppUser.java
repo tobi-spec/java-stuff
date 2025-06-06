@@ -1,4 +1,4 @@
-package StreamAPI.model;
+package advanced.streamAPI.model;
 
 public class AppUser {
     String name;

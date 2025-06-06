@@ -1,4 +1,4 @@
-package customAnnotation.simpleAnnotation;
+package advanced.simpleAnnotation;
 
 import java.lang.reflect.Method;
 
