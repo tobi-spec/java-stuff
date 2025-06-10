@@ -35,6 +35,11 @@ public class CollectorsApi {
         Stream<AppUser> myUser3 = Stream.of(new AppUser("Tom", 1), new AppUser("Tim", 2), new AppUser("Tom", 3), new AppUser("Frank", 4));
         Map<Integer, String> mapOfUsers = myUser3.collect(Collectors.toMap(AppUser::getId, AppUser::getName));
         System.out.println(mapOfUsers);
+
+        System.out.println("------Collect all names-------");
+        Stream<AppUser> myUser4 = Stream.of(new AppUser("Tom", 1), new AppUser("Tim", 2), new AppUser("Tom", 3), new AppUser("Frank", 4));
+        List<String> allNames = myUser4.map(AppUser::getName).toList();
+        System.out.println(allNames);
     }
 
 }
