@@ -10,6 +10,6 @@ public class WebHookController {
 
     @GetMapping("/webhook")
     public ResponseEntity<String> receiveWebhook() {
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Third party is informed", HttpStatus.OK);
     }
 }
