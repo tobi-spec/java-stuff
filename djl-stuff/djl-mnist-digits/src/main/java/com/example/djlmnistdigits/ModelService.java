@@ -1,4 +1,4 @@
-package com.example.simplemodel;
+package com.example.djlmnistdigits;
 
 import ai.djl.*;
 import ai.djl.basicdataset.cv.classification.Mnist;

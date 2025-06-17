@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>simple-model</artifactId>
+    <artifactId>djl-mnist-digits</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>simple-model</name>
     <description>simple-model</description>

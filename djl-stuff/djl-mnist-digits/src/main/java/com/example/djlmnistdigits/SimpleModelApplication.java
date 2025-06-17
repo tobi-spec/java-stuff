@@ -1,4 +1,4 @@
-package com.example.simplemodel;
+package com.example.djlmnistdigits;
 
 import ai.djl.Model;
 import ai.djl.modality.cv.ImageFactory;
@@ -8,12 +8,9 @@ import ai.djl.training.Trainer;
 import ai.djl.training.dataset.Dataset;
 import ai.djl.translate.TranslateException;
 import ai.djl.translate.Translator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 
 @SpringBootApplication
 public class SimpleModelApplication {

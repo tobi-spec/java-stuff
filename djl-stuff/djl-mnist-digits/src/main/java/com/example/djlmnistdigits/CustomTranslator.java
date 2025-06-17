@@ -1,10 +1,8 @@
-package com.example.simplemodel;
+package com.example.djlmnistdigits;
 
-import java.awt.image.*;
-import java.nio.file.*;
 import java.util.*;
 import java.util.stream.*;
-import ai.djl.*;
+
 import ai.djl.ndarray.*;
 import ai.djl.modality.*;
 import ai.djl.modality.cv.*;
