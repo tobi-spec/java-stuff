@@ -15,7 +15,8 @@ public class AccessArray {
             System.out.println("first dimension: " + complexArray.get(0));
             System.out.println("second dimension: " + complexArray.get(0, 0));
             System.out.println("third dimension: " + complexArray.get(0, 0, 0));
-            System.out.println("slice" + complexArray.get(new NDIndex("0, 0:2")));
+            System.out.println("slice" + complexArray.get(new NDIndex("0, 0:2, 0:5")));
+            System.out.println("slice" + complexArray.get(new NDIndex("0:6, 0:1, 0:3")));
         }
     }
 
