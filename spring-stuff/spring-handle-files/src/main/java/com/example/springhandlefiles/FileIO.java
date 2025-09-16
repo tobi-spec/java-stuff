@@ -4,6 +4,9 @@ import java.io.*;
 
 public class FileIO {
 
+    /**
+     * Java way to read/write file from class path
+     */
     public static void main(String[] args) throws IOException {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
