@@ -8,8 +8,9 @@ javac HelloWorld.java
 
 ## run
 
-From class path directory, to respect package structure:
+From class path (project main directory) with fully qualified class name (package + class name  without .class), 
+to respect package structure:
 
 ```bash
-java -cp . basic.compileAndRun.HelloWorld
+java basic.compileAndRun.HelloWorld
 ```
