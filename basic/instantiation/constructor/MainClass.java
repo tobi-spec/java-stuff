@@ -1,10 +1,10 @@
-package basicStuff.instantiation.constructor;
+package basic.instantiation.constructor;
 
 public class MainClass {
 
-    private final ServiceClass serviceClass;
+    private final basicStuff.instantiation.constructor.ServiceClass serviceClass;
 
-    public MainClass(ServiceClass serviceClass) {
+    public MainClass(basicStuff.instantiation.constructor.ServiceClass serviceClass) {
         this.serviceClass = serviceClass;
     }
 
@@ -13,7 +13,7 @@ public class MainClass {
     }
 
     public static void main(String[] args) {
-        ServiceClass service = new ServiceClass();
+        basicStuff.instantiation.constructor.ServiceClass service = new basicStuff.instantiation.constructor.ServiceClass();
         MainClass mainClass = new MainClass(service);
 
         mainClass.displayMessage();

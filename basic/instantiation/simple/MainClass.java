@@ -1,9 +1,9 @@
-package basicStuff.instantiation.simple;
+package basic.instantiation.simple;
 
 public class MainClass {
 
     public static void main(String[] args) {
-        ServiceClass serviceClass = new ServiceClass();
+        basicStuff.instantiation.simple.ServiceClass serviceClass = new basicStuff.instantiation.simple.ServiceClass();
         String message = serviceClass.returnString();
 
         System.out.println(message);
