@@ -1,24 +1,22 @@
 package com.example.springhandlefiles;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 public class FileIO {
-
     /**
-     * Java way to read/write file from class path
+     * It is important to note that the File class cannot modify or access the contents of the file it represents.
      */
     public static void main(String[] args) throws IOException {
+        File file = new File("testfile.txt");
+        file.createNewFile();
+        System.out.println(file.getAbsoluteFile());
+        file.delete();
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
-        writer.write("Hello, World!");
-        writer.write("\nThis is a test file.");
-        writer.close();
+        File dir = new File("testdir");
+        dir.mkdir();
+        System.out.println(dir.getAbsoluteFile());
+        dir.delete();
 
-        BufferedReader reader = new BufferedReader(new FileReader("output.txt"));
-        String line;
-        while((line = reader.readLine()) != null){
-            System.out.println(line);
-        }
-        reader.close();
     }
 }
