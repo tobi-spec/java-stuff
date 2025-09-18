@@ -1,5 +1,7 @@
 package com.example.springhandlefiles;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 
 public class InputStreamIO {
@@ -14,7 +16,12 @@ public class InputStreamIO {
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
-        };
+        }
 
+        try(FileInputStream inputStream = new FileInputStream("spring-stuff/spring-handle-files/src/main/resources/example.json")) {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonExample jsonExample = mapper.readValue(inputStream, JsonExample.class);
+            System.out.println(jsonExample.toString());
+        }
     }
 }
