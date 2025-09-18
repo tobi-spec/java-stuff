@@ -1,9 +1,7 @@
-package com.example.springhandlefiles;
+package com.example.springhandlefiles.text;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,10 +22,5 @@ public class ClassPathResourceIO {
                 System.out.println(line);
             }
         }
-
-        Resource jsonResource = new ClassPathResource("example.json");
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonExample jsonExample = objectMapper.readValue(jsonResource.getInputStream(), JsonExample.class);
-        System.out.println(jsonExample);
     }
 }

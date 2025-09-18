@@ -1,4 +1,4 @@
-package com.example.springhandlefiles;
+package com.example.springhandlefiles.json;
 
 import java.util.List;
 
