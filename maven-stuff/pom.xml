@@ -10,23 +10,76 @@
 
   <!--my comment-->
 
-  <dependencies>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-  </dependencies>
+
+  <profiles>
+    <!--set a profile to be always activated-->
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+
+    <!--set a profile to skip tests-->
+    <profile>
+      <id>skip-test</id>
+      <properties>
+        <maven.test.skip>true</maven.test.skip>
+      </properties>
+    </profile>
+
+    <!--set a profile to be activated via -D system property-->
+    <profile>
+      <id>active-on-property-environment</id>
+      <activation>
+        <property>
+          <name>environment</name>
+        </property>
+      </activation>
+    </profile>
+
+    <!--set a profile to load a specific dependency version-->
+    <profile>
+      <id>preview</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-web</artifactId>
+          <version>3.5.0</version>
+        </dependency>
+      </dependencies>
+    </profile>
+
+  </profiles>
 
 
-  <!--surefire is normally inherited from super pom-->
-  <!--every Maven project inherits from a Super POM, which provides default plugin bindings.-->
   <build>
     <plugins>
+
+      <!--surefire for test execution is normally inherited from super pom-->
+      <!--every Maven project inherits it from a super pom, which provides default plugin bindings.-->
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M9</version>
       </plugin>
+
+      <!--show profiles during compiling-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-help-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>show-profiles</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>active-profiles</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
+
   </build>
 
 </project>
