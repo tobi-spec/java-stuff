@@ -33,3 +33,6 @@ needs plugin
 ## mvn help:effective-pom
 Gives the effective POM for the project, 
 which is the result of merging the project's POM with its parent POMs and applying any settings from the super POM.
+
+## mvn dependency:tree
+Shows dependencies as tree
