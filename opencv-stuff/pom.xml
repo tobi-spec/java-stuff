@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>opencv</artifactId>
+    <artifactId>opencv-stuff</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>opencv</name>
     <description>opencv</description>
