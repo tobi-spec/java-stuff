@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WebSocket Flood Client</title>
+    <style>
+        body { font-family: system-ui, Arial, sans-serif; margin: 20px; }
+        .row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
+        .card { border: 1px solid #ddd; border-radius: 8px; padding: 12px; min-width: 260px; }
+        button { padding: 8px 12px; }
+        input[type="number"] { width: 120px; padding: 6px; }
+        pre { background: #111; color: #eee; padding: 10px; border-radius: 8px; overflow: auto; max-height: 240px; }
+        .ok { color: #0a0; }
+        .bad { color: #c00; }
+        .muted { color: #666; }
+        label { display: inline-flex; gap: 8px; align-items: center; }
+    </style>
+</head>
+<body>
+<h1>WebSocket Flood Client</h1>
+
+<div class="row">
+    <div class="card">
+        <div><strong>Status:</strong> <span id="status" class="muted">disconnected</span></div>
+        <div><strong>URL:</strong> <code id="urlLabel"></code></div>
+        <div style="margin-top: 10px;" class="row">
+            <button id="connectBtn">Connect</button>
+            <button id="disconnectBtn" disabled>Disconnect</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div><strong>Flood settings</strong></div>
+        <div style="margin-top: 8px;">
+            <label>
+                Messages per tick:
+                <input id="perTick" type="number" min="1" max="50000" value="500" />
+            </label>
+        </div>
+        <div style="margin-top: 8px;">
+            <label>
+                Tick every (ms):
+                <input id="tickMs" type="number" min="1" max="10000" value="10" />
+            </label>
+        </div>
+        <div style="margin-top: 8px;">
+            <label>
+                Payload bytes (approx):
+                <input id="payloadBytes" type="number" min="1" max="200000" value="10" />
+            </label>
+        </div>
+        <div style="margin-top: 10px;" class="row">
+            <button id="startBtn" disabled>Start Flood</button>
+            <button id="stopBtn" disabled>Stop Flood</button>
+        </div>
+        <div class="muted" style="margin-top: 8px;">
+            Tip: open DevTools Console for extra logs.
+        </div>
+    </div>
+
+    <div class="card">
+        <div><strong>Counters</strong></div>
+        <div style="margin-top: 8px;">Sent: <span id="sent">0</span></div>
+        <div>Received: <span id="received">0</span></div>
+        <div>Dropped (client-side not sent): <span id="dropped">0</span></div>
+        <div style="margin-top: 8px;">Last close: <span id="lastClose" class="muted">n/a</span></div>
+    </div>
+</div>
+
+<pre id="log"></pre>
+
+<script>
+    // --- Config ---
+    let WS_URL = "ws://localhost:8080/overflowingwebsocket";
+
+    // --- State ---
+    let ws = null;
+    let floodTimer = null;
+    let seq = 0;
+
+    let sent = 0;
+    let received = 0;
+    let dropped = 0;
+
+    let reconnectAttempt = 0;
+    let reconnectTimer = null;
+    let shouldReconnect = false;
+
+    // --- UI ---
+    const elStatus = document.getElementById("status");
+    const elUrlLabel = document.getElementById("urlLabel");
+    const elLog = document.getElementById("log");
+
+    const elSent = document.getElementById("sent");
+    const elReceived = document.getElementById("received");
+    const elDropped = document.getElementById("dropped");
+    const elLastClose = document.getElementById("lastClose");
+
+    const connectBtn = document.getElementById("connectBtn");
+    const disconnectBtn = document.getElementById("disconnectBtn");
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+
+    const perTickInput = document.getElementById("perTick");
+    const tickMsInput = document.getElementById("tickMs");
+    const payloadBytesInput = document.getElementById("payloadBytes");
+
+    elUrlLabel.textContent = WS_URL;
+
+    function log(line) {
+        const ts = new Date().toISOString().split("T")[1].replace("Z", "");
+        elLog.textContent = `[${ts}] ${line}\n` + elLog.textContent;
+    }
+
+    function setStatus(text, cls) {
+        elStatus.textContent = text;
+        elStatus.className = cls || "muted";
+    }
+
+    function updateCounters() {
+        elSent.textContent = String(sent);
+        elReceived.textContent = String(received);
+        elDropped.textContent = String(dropped);
+    }
+
+    function setButtons({ connected }) {
+        connectBtn.disabled = connected;
+        disconnectBtn.disabled = !connected;
+        startBtn.disabled = !connected;
+        stopBtn.disabled = !floodTimer;
+    }
+
+    // --- WebSocket ---
+    function connect() {
+        if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) return;
+
+        setStatus("connecting…", "muted");
+        log(`Connecting to ${WS_URL}`);
+        ws = new WebSocket(WS_URL);
+
+        ws.onopen = () => {
+            reconnectAttempt = 0;
+            setStatus("connected", "ok");
+            log("Connected");
+            setButtons({ connected: true });
+        };
+
+        ws.onmessage = (evt) => {
+            received++;
+            updateCounters();
+            //log("recv: " + evt.data);
+        };
+
+        ws.onerror = () => {
+            // Browser hides many details; onclose will follow.
+            log("WebSocket error");
+        };
+
+        ws.onclose = (evt) => {
+            const reason = evt.reason ? ` reason="${evt.reason}"` : "";
+            elLastClose.textContent = `code=${evt.code}${reason}`;
+            log(`Closed (code=${evt.code}${reason})`);
+
+            stopFlood();
+
+            setStatus("disconnected", "bad");
+            setButtons({ connected: false });
+
+            ws = null;
+
+            if (shouldReconnect) scheduleReconnect();
+        };
+    }
+
+    function disconnect() {
+        shouldReconnect = false;
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
+
+        stopFlood();
+
+        if (ws) {
+            log("Disconnect requested");
+            ws.close(1000, "Client disconnect");
+        }
+    }
+
+    function scheduleReconnect() {
+        clearTimeout(reconnectTimer);
+        const base = 200; // ms
+        const max = 5000; // ms
+        const delay = Math.min(max, base * Math.pow(2, reconnectAttempt++));
+        log(`Reconnecting in ${delay}ms…`);
+        reconnectTimer = setTimeout(() => connect(), delay);
+    }
+
+    // --- Flood ---
+    function makePayload(approxBytes) {
+        // Simple predictable payload: "seq:<n>|" + padding
+        const head = `seq:${seq}|`;
+        const padLen = Math.max(0, approxBytes - head.length);
+        return head + "x".repeat(padLen);
+    }
+
+    function startFlood() {
+        if (!ws || ws.readyState !== WebSocket.OPEN) return;
+        if (floodTimer) return;
+
+        const perTick = Math.max(1, Number(perTickInput.value || 1));
+        const tickMs = Math.max(1, Number(tickMsInput.value || 10));
+        const payloadBytes = Math.max(1, Number(payloadBytesInput.value || 10));
+
+        log(`Starting flood: perTick=${perTick}, tickMs=${tickMs}, payloadBytes≈${payloadBytes}`);
+        floodTimer = setInterval(() => {
+            if (!ws || ws.readyState !== WebSocket.OPEN) return;
+
+            for (let i = 0; i < perTick; i++) {
+                // Client-side "backpressure": if bufferedAmount is too large, skip sends.
+                // This prevents the browser tab from exploding memory if server is slow.
+                //if (ws.bufferedAmount > 4 * 1024 * 1024) { // 4MB
+                    //dropped++;
+                    //continue;
+                //}
+
+                const payload = makePayload(payloadBytes);
+                seq++;
+                ws.send(payload);
+                sent++;
+            }
+            updateCounters();
+        }, tickMs);
+
+        setButtons({ connected: true });
+        stopBtn.disabled = false;
+    }
+
+    function stopFlood() {
+        if (!floodTimer) return;
+        clearInterval(floodTimer);
+        floodTimer = null;
+        log("Flood stopped");
+        setButtons({ connected: !!(ws && ws.readyState === WebSocket.OPEN) });
+    }
+
+    // --- Wire up UI ---
+    connectBtn.onclick = () => {
+        shouldReconnect = true; // auto-reconnect if server kicks us
+        connect();
+    };
+
+    disconnectBtn.onclick = () => {
+        disconnect();
+    };
+
+    startBtn.onclick = () => startFlood();
+    stopBtn.onclick = () => stopFlood();
+
+    // Auto-fill initial UI state
+    setButtons({ connected: false });
+    updateCounters();
+
+    // Optional: auto-connect on load
+    // shouldReconnect = true;
+    // connect();
+</script>
+</body>
+</html>
