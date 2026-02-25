@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/exampledb
+    username: admin
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: update
+  cache:
+    type: redis
+    redis:
+      time-to-live: 60000 #1 min in milliseconds
