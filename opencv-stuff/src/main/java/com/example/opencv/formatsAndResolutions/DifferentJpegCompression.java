@@ -20,11 +20,11 @@ public class DifferentJpegCompression {
             throw new IllegalStateException("No frame captured from camera");
         }
 
-        saveJpeg("output.png", image, 95);
-        saveJpeg("output.png2", image, 10);
+        saveJpeg("output1.jpg", image, 95);
+        saveJpeg("output2.jpg", image, 10);
 
-        image.release();
         camera.release();
+        image.release();
     }
 
     private static void saveJpeg(String image, Mat frame, int quality) {
