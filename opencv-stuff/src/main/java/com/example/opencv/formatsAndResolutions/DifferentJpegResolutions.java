@@ -10,25 +10,32 @@ import org.opencv.videoio.VideoCapture;
 public class DifferentJpegResolutions {
     public static void main(String[] args) {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        VideoCapture camera = new VideoCapture(0); // Open default camera
-        Mat frame = new Mat();
-        if (camera.read(frame)) {
-            System.out.println("Resolution: " + frame.cols() + "x" + frame.rows());
-            Imgcodecs.imwrite("output.jpg", frame);  // ca. 50 kb
 
-            Mat imageForResize = frame.clone();
-            Imgproc.resize(imageForResize, imageForResize, new Size(1280, 720));
-            System.out.println("Resolution: " + imageForResize.cols() + "x" + imageForResize.rows());
-            Imgcodecs.imwrite("output2.jpg", imageForResize); // 100kb
-            imageForResize.release();
-
-            Mat imageForResize2 = frame.clone();
-            Imgproc.resize(imageForResize2, imageForResize2, new Size(1920, 1080));
-            System.out.println("Resolution: " + imageForResize2.cols() + "x" + imageForResize2.rows());
-            Imgcodecs.imwrite("output3.jpg", imageForResize2); // 200kb
-            imageForResize2.release();
+        VideoCapture camera = new VideoCapture(0);
+        if(!camera.isOpened()) {
+            throw new IllegalStateException("Camera not opend");// Open default camera
         }
+
+        Mat frame = new Mat();
+        if (!camera.read(frame)) {
+            throw new IllegalStateException("No frame captured from camera");
+        }
+
+        System.out.println("Resolution: " + frame.cols() + "x" + frame.rows());
+        Imgcodecs.imwrite("output.jpg", frame);  // ca. 50 kb
+
+        resizeAndSave(frame, 1280, 720, "output2.jpg");
+        resizeAndSave(frame, 1920, 1080, "output3.jpg");
+
         frame.release();
         camera.release();
+    }
+
+    private static void resizeAndSave(Mat frame, int width, int height, String image) {
+        Mat imageForResize = frame.clone();
+        Imgproc.resize(imageForResize, imageForResize, new Size(width, height));
+        System.out.println("Resolution: " + imageForResize.cols() + "x" + imageForResize.rows());
+        Imgcodecs.imwrite(image, imageForResize);
+        imageForResize.release();
     }
 }
