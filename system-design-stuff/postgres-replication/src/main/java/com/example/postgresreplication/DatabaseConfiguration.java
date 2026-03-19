@@ -6,6 +6,7 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -28,9 +29,8 @@ public class DatabaseConfiguration {
     }
 
     @Bean
-    @Primary
-    public DataSource dataSource(@Qualifier("firstDataSource") DataSource writerDataSource,
-                                 @Qualifier("secondDataSource") DataSource readerDataSource) {
+    public DataSource routingDataSource(@Qualifier("firstDataSource") DataSource writerDataSource,
+                                        @Qualifier("secondDataSource") DataSource readerDataSource) {
         TransactionRoutingDataSource routingDataSource = new TransactionRoutingDataSource();
 
         Map<Object, Object> targets = new HashMap<>();
@@ -42,6 +42,12 @@ public class DatabaseConfiguration {
         routingDataSource.afterPropertiesSet();
 
         return routingDataSource;
+    }
+
+    @Bean
+    @Primary
+    public DataSource dataSource(@Qualifier("routingDataSource") DataSource routingDataSource) {
+        return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 
 }
