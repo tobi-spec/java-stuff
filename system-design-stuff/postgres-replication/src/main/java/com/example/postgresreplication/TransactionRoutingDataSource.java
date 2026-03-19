@@ -10,6 +10,7 @@ public class TransactionRoutingDataSource extends AbstractRoutingDataSource {
 
     @Override
     public Object determineCurrentLookupKey() {
-        return TransactionSynchronizationManager.isCurrentTransactionReadOnly() ? READER : WRITER;
+        var database = TransactionSynchronizationManager.isCurrentTransactionReadOnly() ? READER : WRITER;
+        return database;
     }
 }
