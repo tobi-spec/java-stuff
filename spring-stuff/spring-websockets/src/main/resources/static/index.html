@@ -2,35 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Websocket Client</title>
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <title>WebSocket Chat</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2rem;
+            max-width: 40rem;
+        }
+
+        .row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        input {
+            flex: 1;
+            padding: 0.5rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+        }
+
+        #status {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
-    <h2>Websocket Client</h2>
-    <input id="sender" placeholder="your name">
-    <input id="message" placeholder="your message">
-    <button onclick="send()">send</button>
+    <h2>WebSocket Chat</h2>
+    <div id="status">Connecting...</div>
+    <div class="row">
+        <input id="sender" placeholder="your name" value="Tobi">
+    </div>
+    <div class="row">
+        <input id="message" placeholder="your message">
+        <button id="send">Send</button>
+    </div>
     <ul id="messages"></ul>
 
     <script>
-        const websocket = new SockJS("/websocket");
-        const stompClient = Stomp.over(websocket)
+        const status = document.getElementById("status");
+        const senderInput = document.getElementById("sender");
+        const messageInput = document.getElementById("message");
+        const sendButton = document.getElementById("send");
+        const messages = document.getElementById("messages");
 
-        stompClient.connect({}, () => {
-            stompClient.subscribe("/topic/messages", message => {
-                const body = JSON.parse(message.body);
-                const item = document.createElement("li");
-                item.innerText = `${body.sender}: ${body.content}`;
-                document.getElementById("messages").appendChild(item)
-            })
-        })
+        const socket = new WebSocket(`ws://localhost:8080/chat`);
+
+        socket.addEventListener("open", () => {
+            status.textContent = "Connected";
+        });
+
+        socket.addEventListener("message", event => {
+            const body = JSON.parse(event.data);
+            const item = document.createElement("li");
+            item.innerText = `${body.sender}: ${body.content}`;
+            messages.appendChild(item);
+        });
+
+        socket.addEventListener("close", () => {
+            status.textContent = "Disconnected";
+        });
+
+        socket.addEventListener("error", () => {
+            status.textContent = "Connection error";
+        });
 
         function send() {
-            const sender = document.getElementById("sender").value
-            const message = document.getElementById("message").value
-            stompClient.send("/app/chat", {}, JSON.stringify({sender: sender, content: message}))
+            if (socket.readyState !== WebSocket.OPEN) {
+                return;
+            }
+
+            socket.send(JSON.stringify({
+                sender: senderInput.value,
+                content: messageInput.value
+            }));
+            messageInput.value = "";
         }
+
+        sendButton.addEventListener("click", send);
+        messageInput.addEventListener("keydown", event => {
+            if (event.key === "Enter") {
+                send();
+            }
+        });
     </script>
 </body>
 </html>
