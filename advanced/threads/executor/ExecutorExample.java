@@ -1,6 +1,6 @@
 package advanced.threads.executor;
 
-import advanced.threads.safe.SafeCounter;
+import advanced.threads.synronized.safe.SafeCounter;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

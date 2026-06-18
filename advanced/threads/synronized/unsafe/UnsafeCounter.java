@@ -1,4 +1,4 @@
-package advanced.threads.unsafe;
+package advanced.threads.synronized.unsafe;
 
 public class UnsafeCounter {
     private int counter = 0;

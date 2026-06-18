@@ -1,4 +1,4 @@
-package advanced.threads.safe;
+package advanced.threads.synronized.safe;
 
 public class ThreadSafeCounter {
 
