@@ -1,6 +1,6 @@
 package advanced.threads;
 
-public class main {
+public class PrintThreads {
     public static void main(String[] args) {
         System.out.println(Thread.activeCount());
 
@@ -11,5 +11,9 @@ public class main {
                                 + " / group=" + thread.getThreadGroup().getName()
                                 + " / daemon=" + thread.isDaemon()
                                 + " / priority=" + thread.getPriority()));
+
+        System.out.println(Thread.currentThread().getName());
+        System.out.println(Thread.currentThread().getState());
     }
+
 }

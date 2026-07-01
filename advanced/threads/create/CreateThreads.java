@@ -1,6 +1,6 @@
-package advanced.threads;
+package advanced.threads.create;
 
-public class MainThread {
+public class CreateThreads {
 
     public static void main(String[] args) {
         MyThread myThread = new MyThread();

@@ -1,6 +1,6 @@
-package advanced.threads;
+package advanced.threads.create;
 
-public class MyThread extends Thread{
+public class MyRunnable implements Runnable {
 
     @Override
     public void run() {
@@ -16,6 +16,5 @@ public class MyThread extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }
