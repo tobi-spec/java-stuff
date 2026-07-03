@@ -1,0 +1,8 @@
+package com.example.javaArchive;
+
+public class HelloWorld {
+
+    public static void sayHello() {
+        System.out.println("Hello World from Java Archive!");
+    }
+}
