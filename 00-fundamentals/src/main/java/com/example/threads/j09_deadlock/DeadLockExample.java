@@ -1,4 +1,4 @@
-package com.example.threads.deadlock;
+package com.example.threads.j09_deadlock;
 
 public class DeadLockExample {
 

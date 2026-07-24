@@ -1,6 +1,4 @@
-package com.example.threads.synronized.safe;
-
-import java.util.concurrent.atomic.AtomicInteger;
+package com.example.threads.j03_synronized.safe;
 
 public class SafeCounter {
     private int counter = 0;

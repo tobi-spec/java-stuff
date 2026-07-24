@@ -1,13 +1,13 @@
-package com.example.threads.synronized.unsafe;
+package com.example.threads.j03_synronized.safe;
 
-public class NonThreadSafeCounter {
+public class ThreadSafeCounter {
 
     public static void main(String[] args) throws InterruptedException {
-        UnsafeCounter unsafeCounter = new UnsafeCounter();
+        SafeCounter safeCounter = new SafeCounter();
 
         Runnable task = () -> {
             for (int i = 0; i < 1000; i++) {
-                unsafeCounter.increment();
+                safeCounter.increment();
             }
         };
 
@@ -19,6 +19,6 @@ public class NonThreadSafeCounter {
         thread1.join();
         thread2.join();
 
-        System.out.println("Final count (Unsafe): " + unsafeCounter.getCounter());
+        System.out.println("Final count (safe): " + safeCounter.getCounter());
     }
 }

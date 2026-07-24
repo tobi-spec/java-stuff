@@ -1,6 +1,6 @@
-package com.example.threads.executor;
+package com.example.threads.j06_executor;
 
-import com.example.threads.synronized.safe.SafeCounter;
+import com.example.threads.j03_synronized.safe.SafeCounter;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

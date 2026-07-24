@@ -1,4 +1,4 @@
-package com.example.threads.synronized.unsafe;
+package com.example.threads.j03_synronized.unsafe;
 
 public class UnsafeCounter {
     private int counter = 0;

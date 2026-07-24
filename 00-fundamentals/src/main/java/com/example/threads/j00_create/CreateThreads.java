@@ -1,4 +1,4 @@
-package com.example.threads.create;
+package com.example.threads.j00_create;
 
 public class CreateThreads {
 
